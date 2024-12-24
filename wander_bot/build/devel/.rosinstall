@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/marat/catkin_ws/src/wander_bot/build/devel/setup.sh

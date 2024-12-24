@@ -1,0 +1,8 @@
+prefix=/home/marat/catkin_ws/src/wander_bot/build/devel
+
+Name: wander_bot
+Description: Description of wander_bot
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

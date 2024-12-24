@@ -1,0 +1,147 @@
+#!/usr/bin/env python3
+import rospy
+from geometry_msgs.msg import Twist
+from sensor_msgs.msg import LaserScan
+import sys
+import math
+import enum
+
+class RobotStatus(enum.Enum):
+    down = 1
+    turn_left = 2
+    up = 3
+    turn_right = 4
+
+class State:
+	def __init__(self):
+		self.state = RobotStatus.down
+		self.statuses = list(RobotStatus)
+
+	def next_state(self):
+		current_index = self.statuses.index(self.state)
+		next_index = (current_index + 1) % len(self.statuses)
+		self.state = self.statuses[next_index]
+	
+	def to_move(self):
+		return self.state == RobotStatus.up or self.state == RobotStatus.down 
+	
+	def get_turn_angle(self):
+		if self.state == RobotStatus.turn_left:
+			return math.radians(-90)
+		
+		if self.state == RobotStatus.turn_right:
+			return math.radians(90)
+		
+
+
+class SnakeRobot:
+	FORWARD_SPEED = 0.1
+	MIN_SCAN_ANGLE = math.pi - (15.0/180.0*math.pi)
+	MAX_SCAN_ANGLE = math.pi + (15.0/180.0*math.pi)
+	MIN_DIST_FROM_OBSTACLE = 0.6
+	ROTATE_SPEED = (30 * math.pi) / 180 
+	keepMoving = True
+	HORIZONTAL_DISTANCE = 0.2
+
+	def __init__(self):
+		self.state = State()
+		rospy.init_node('stopper', anonymous=False)
+		self.pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
+		self.sub = rospy.Subscriber('scan', LaserScan, self.callback)
+		self.ROTATE_SPEED = math.radians(30)
+
+	def move_horizontally(self,direction):
+		print("Move horizontally")
+		twist = Twist()
+		start = rospy.Time.now()
+		end = start + rospy.Duration(abs(self.HORIZONTAL_DISTANCE) / self.FORWARD_SPEED)
+		while rospy.Time.now() < end:
+			twist.linear.x = direction * self.FORWARD_SPEED
+			self.pub.publish(twist)
+		twist.linear.x = 0
+
+	
+	def move(self):
+		vel = Twist()
+		vel.linear.x = (-1)*self.FORWARD_SPEED
+		self.pub.publish(vel)
+		# if self.state.state == RobotStatus.down:
+		# 	vel.linear.x = (-1)*self.FORWARD_SPEED
+		# 	self.pub.publish(vel)
+		# elif self.state.state == RobotStatus.up:
+		# 	vel.linear.x = (1)*self.FORWARD_SPEED
+		# 	self.pub.publish(vel)
+	
+	def start_move(self):
+		# while not rospy.is_shutdown():
+		# 	rospy.spin()
+		rate = rospy.Rate(10) # 10hz
+		vel = Twist()
+		self.keepMoving = True
+		while not rospy.is_shutdown():
+			if self.state.to_move():
+				self.move()
+				rate.sleep()
+			else:
+				vel.linear.x = 0
+				self.rotate()
+				# direction = 1 if self.state.state == RobotStatus.turn_left else -1
+				direction = -1
+				self.move_horizontally(direction)
+				self.rotate()
+				self.state.next_state()
+				# self.pub.publish(vel)
+				rate.sleep()
+	
+	def callback(self, msg):
+		isObstacleInFront = False
+		minIndex = round((self.MIN_SCAN_ANGLE - msg.angle_min) / msg.angle_increment)
+		maxIndex = round((self.MAX_SCAN_ANGLE - msg.angle_min) / msg.angle_increment)
+		# print(minIndex, maxIndex, self.MIN_SCAN_ANGLE, self.MAX_SCAN_ANGLE, msg.angle_min, msg.angle_max)
+		# print(len(msg.ranges))
+
+		currIndex = minIndex + 1
+		while currIndex <= maxIndex:
+			if msg.ranges[int(currIndex)] < self.MIN_DIST_FROM_OBSTACLE:
+				isObstacleInFront = True
+				break
+			currIndex = currIndex + 1
+		
+		if isObstacleInFront and self.state.to_move():
+			print("Obstacle! Rotating")
+			self.state.next_state()
+			isObstacleInFront = False
+		
+
+		# if self.state.to_move():
+		# 	pass
+		# else:
+		# 	self.keepMoving = False
+		# 	self.state.next_state()
+
+	def to_rad(degree):
+		return math.radians(degree)
+
+	def rotate(self):
+		twist = Twist()
+		print("Rotating")
+		turn_angle = self.state.get_turn_angle()
+
+		start = rospy.Time.now()
+		end = start + rospy.Duration(abs(turn_angle) / self.ROTATE_SPEED)
+		print(self.state.state)
+		while rospy.Time.now() < end:
+			twist.angular.z = (1 if self.state.state == RobotStatus.turn_left else -1) * self.ROTATE_SPEED
+			self.pub.publish(twist)
+		print("Stop Rotating")
+		twist.angular.z = 0
+		self.pub.publish(twist)
+		# self.state.next_state
+		# self.keepMoving = True
+			
+if __name__ == '__main__':
+	try:
+		st = SnakeRobot()
+		st.start_move()
+	except rospy.ROSInterruptException:
+		pass

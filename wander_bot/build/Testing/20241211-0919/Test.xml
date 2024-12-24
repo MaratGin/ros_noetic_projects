@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Site BuildName="(empty)"
+	BuildStamp="20241211-0919-Experimental"
+	Name="marat-ubuntu-20"
+	Generator="ctest-3.16.3"
+	CompilerName="/usr/bin/aarch64-linux-gnu-g++"
+	CompilerVersion="9.4.0"
+	OSName="Linux"
+	Hostname="marat-ubuntu-20"
+	OSRelease="5.4.0-200-generic"
+	OSVersion="#220-Ubuntu SMP Fri Sep 27 13:21:29 UTC 2024"
+	OSPlatform="aarch64"
+	Is64Bits="1"
+	VendorString=""
+	VendorID="Unknown Manufacturer"
+	FamilyID="8"
+	ModelID="0"
+	ProcessorCacheSize="0"
+	NumberOfLogicalCPU="4"
+	NumberOfPhysicalCPU="1"
+	TotalVirtualMemory="3918"
+	TotalPhysicalMemory="3919"
+	LogicalProcessorsPerPhysical="4"
+	ProcessorClockFrequency="0"
+	>
+	<Testing>
+		<StartDateTime>Dec 11 19:03 MSK</StartDateTime>
+		<StartTestTime>1733933020</StartTestTime>
+		<TestList/>
+		<EndDateTime>Dec 11 19:03 MSK</EndDateTime>
+		<EndTestTime>1733933020</EndTestTime>
+		<ElapsedMinutes>0</ElapsedMinutes>
+	</Testing>
+</Site>
