@@ -11,8 +11,13 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   std_msgs
+  nav_msgs
+  message_generation
+  # message_generation
 )
 
+add_service_files(FILES MapData.srv)
+generate_messages(DEPENDENCIES std_msgs nav_msgs)
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
@@ -106,7 +111,7 @@ catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES mapping
 #  CATKIN_DEPENDS roscpp rospy std_msgs
-#  DEPENDS system_lib
+ DEPENDS rospy std_msgs nav_msgs
 )
 
 ###########
@@ -134,7 +139,8 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/mapping_node.cpp)
-add_executable(load_map src/load_map.cpp)
+# add_executable(map_client src/load_map.cpp)
+
 
 
 ## Rename C++ executable without prefix
@@ -152,7 +158,23 @@ add_executable(load_map src/load_map.cpp)
 #   ${catkin_LIBRARIES}
 # )
 
-target_link_libraries(load_map ${catkin_LIBRARIES})
+
+
+
+
+
+
+
+# target_link_libraries(map_client ${catkin_LIBRARIES})
+# target_link_libraries(map_server ${catkin_LIBRARIES})
+
+# add_dependencies(map_client ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+# add_dependencies(map_server ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
+
+
+
+
 
 #############
 ## Install ##
@@ -163,7 +185,8 @@ target_link_libraries(load_map ${catkin_LIBRARIES})
 
 
 catkin_install_python(PROGRAMS
-scripts/load_map.py
+scripts/map_client.py
+scripts/map_server.py
 DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
