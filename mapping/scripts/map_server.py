@@ -13,24 +13,29 @@ from mapping.srv import MapData
 
 def remove_noise_clusters(matrix, threshold, clear_black=False, clear_white=False, clear_gray=False):
     """
-    Remove noise clusters from a 2D NumPy array containing values -1, 0, and 1.
-    A cluster is removed if it has a size less than or equal to the threshold.
+    Remove noise clusters from map.
     """
+
     delete_pixel = 6
     detect_pixel = 0
 
 
+    # If we clearing white pixel noise
     if clear_white:
         delete_pixel = 7
         detect_pixel = -2
+    
+    # If we clearing black pixel noise
     if clear_black:
         delete_pixel = 6
         detect_pixel = 0
 
+    # If we clearing gray pixel noise
     if clear_gray:
         delete_pixel = 8
         detect_pixel = -1
 
+    # If no matrix return 
     if matrix.size == 0:
         return matrix
 
@@ -38,32 +43,31 @@ def remove_noise_clusters(matrix, threshold, clear_black=False, clear_white=Fals
     visited = np.zeros((rows, cols), dtype=bool)  # Track visited cells
     directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]  # 4-connected neighbors
 
-    def get_cluster(r, c):
-        """Finds all connected cells of the same value starting from (r, c)."""
-        value = matrix[r, c]
-        stack = [(r, c)]
+    def get_cluster(row, column):
+        value = matrix[row, column]
+        stack = [(row, column)]
         cluster = []
-        visited[r, c] = True
+        visited[row, column] = True
 
         while stack:
-            cr, cc = stack.pop()
-            cluster.append((cr, cc))
+            cur_row, cur_column = stack.pop()
+            cluster.append((cur_row, cur_column))
             for dr, dc in directions:
-                nr, nc = cr + dr, cc + dc
-                if 0 <= nr < rows and 0 <= nc < cols:
-                    if not visited[nr, nc] and matrix[nr, nc] == value:
-                        visited[nr, nc] = True
-                        stack.append((nr, nc))
+                neighbor_row, neighbor_column = cur_row + dr, cur_column + dc
+                if 0 <= neighbor_row < rows and 0 <= neighbor_column < cols:
+                    if not visited[neighbor_row, neighbor_column] and matrix[neighbor_row, neighbor_column] == value:
+                        visited[neighbor_row, neighbor_column] = True
+                        stack.append((neighbor_row, neighbor_column))
         return cluster, value
 
-    for r in range(rows):
-        for c in range(cols):
-            if not visited[r, c] and matrix[r, c] != detect_pixel:  # Ignore background (0)
-                cluster, value = get_cluster(r, c)
+    for row in range(rows):
+        for column in range(cols):
+            if not visited[row, column] and matrix[row, column] != detect_pixel:  # Ignore background (0)
+                cluster, value = get_cluster(row, column)
                 if len(cluster) <= threshold:
-                    for cr, cc in cluster:
-                        print("CLEAR " + str(cr) + str(cc))
-                        matrix[cr, cc] = delete_pixel  # Remove noise clusters by setting to 0
+                    for cur_row, cur_column in cluster:
+                        print("CLEAR " + str(cur_row) + str(cur_column))
+                        matrix[cur_row, cur_column] = delete_pixel  # Remove noise clusters by setting to 0
     return matrix
 
 def handle_map_request(req):
@@ -122,12 +126,11 @@ def map_server():
 
 def save_map_cnanges(occupancy_grid, save_folder="maps", save_name="changes"):
     """
-    Saves the modified occupancy grid as a PGM and YAML file.
-    
-    :param occupancy_grid: The NumPy array representing the occupancy grid.
-    :param metadata: The dictionary containing the map's metadata.
-    :param save_folder: Folder where the map should be saved.
-    :param save_name: Base name for the saved files (without extension).
+    Save map, that shows all removed noise pixels.
+
+    occupancy_grid: cleared map.
+    save_folder: Folder to save.
+    save_name: File name for save.
     """
     rospack = rospkg.RosPack()
     package_path = rospack.get_path("mapping")
@@ -156,4 +159,3 @@ def save_map_cnanges(occupancy_grid, save_folder="maps", save_name="changes"):
 if __name__ == "__main__":
     print("START")
     map_server()
-# Example usage:
