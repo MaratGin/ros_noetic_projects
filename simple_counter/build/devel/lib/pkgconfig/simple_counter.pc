@@ -1,0 +1,8 @@
+prefix=/home/marat/catkin_ws/src/simple_counter/build/devel
+
+Name: simple_counter
+Description: Description of simple_counter
+Version: 0.0.0
+Cflags: -I/home/marat/catkin_ws/src/simple_counter/build/devel/include
+Libs: -L${prefix}/lib 
+Requires: actionlib_msgs

@@ -1,0 +1,28 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/home/marat/catkin_ws/devel/include/**",
+        "/opt/ros/noetic/include/**",
+        "/home/marat/catkin_ws/src/custom_services/include/**",
+        "/home/marat/catkin_ws/src/map_cleaner/include/**",
+        "/home/marat/catkin_ws/src/mapping/include/**",
+        "/home/marat/catkin_ws/src/my_actionlib/include/**",
+        "/home/marat/catkin_ws/src/tf_demo/include/**",
+        "/home/marat/catkin_ws/src/waller/include/**",
+        "/home/marat/catkin_ws/src/wander_bot/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-arm64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}

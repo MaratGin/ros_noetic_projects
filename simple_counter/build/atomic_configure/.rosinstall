@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/marat/catkin_ws/src/simple_counter/build/devel/setup.sh

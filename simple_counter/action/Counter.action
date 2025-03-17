@@ -1,0 +1,9 @@
+#goal
+int32 start
+int32 end
+---
+#result
+int32[] sequence
+---
+#feedback
+int32[] sequence
