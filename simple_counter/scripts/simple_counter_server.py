@@ -41,7 +41,7 @@ class CounterAction(object):
 				if is_prime(num):
 					print("NEW PRIME " + str(num))
 					if (count >=start):
-						print("COUNT" + str(count) + "START" + str(start))
+						# print("COUNT" + str(count) + "START" + str(start))
 						primes.append(num)
 					count += 1
 				num += 1
@@ -55,8 +55,6 @@ class CounterAction(object):
         
 		# append the seeds for the fibonacci sequence
 		self._feedback.sequence = []
-		self._feedback.sequence.append(0)
-		self._feedback.sequence.append(1)
 
 		# publish info to the console for the user
 		rospy.loginfo('%s: Executing, creating  sequence of prime numbers')

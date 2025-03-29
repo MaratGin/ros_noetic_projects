@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Site BuildName="(empty)"
-	BuildStamp="20250317-1233-Experimental"
+	BuildStamp="20250329-1259-Experimental"
 	Name="marat-ubuntu"
 	Generator="ctest-3.16.3"
 	CompilerName="/usr/bin/aarch64-linux-gnu-g++"
 	CompilerVersion="9.4.0"
 	OSName="Linux"
 	Hostname="marat-ubuntu"
-	OSRelease="5.4.0-204-generic"
-	OSVersion="#224-Ubuntu SMP Thu Dec 5 13:31:12 UTC 2024"
+	OSRelease="5.4.0-208-generic"
+	OSVersion="#228-Ubuntu SMP Sat Feb 8 14:01:34 UTC 2025"
 	OSPlatform="aarch64"
 	Is64Bits="1"
 	VendorString=""
@@ -24,11 +24,11 @@
 	ProcessorClockFrequency="0"
 	>
 	<Testing>
-		<StartDateTime>Mar 17 16:16 UTC</StartDateTime>
-		<StartTestTime>1742228161</StartTestTime>
+		<StartDateTime>Mar 29 13:10 UTC</StartDateTime>
+		<StartTestTime>1743253805</StartTestTime>
 		<TestList/>
-		<EndDateTime>Mar 17 16:16 UTC</EndDateTime>
-		<EndTestTime>1742228161</EndTestTime>
+		<EndDateTime>Mar 29 13:10 UTC</EndDateTime>
+		<EndTestTime>1743253805</EndTestTime>
 		<ElapsedMinutes>0</ElapsedMinutes>
 	</Testing>
 </Site>

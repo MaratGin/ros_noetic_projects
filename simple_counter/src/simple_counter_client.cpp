@@ -17,8 +17,16 @@ int main (int argc, char **argv)
   ROS_INFO("Action server started, sending goal.");
   // send a goal to the action
   simple_counter::CounterGoal goal;
-  goal.start = 8;
-  goal.end = 12;
+  if (argc < 3) {
+    ROS_ERROR("Not enough arguments");
+    return 1;
+  }
+  int start = std::stoi(argv[1]);
+  int end = std::stoi(argv[2]);
+  ROS_INFO("Received arguments: %d and %d", start, end);
+
+  goal.start = start;
+  goal.end = end;
   ac.sendGoal(goal);
 
   //wait for the action to return

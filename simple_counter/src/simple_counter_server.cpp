@@ -49,7 +49,7 @@ vector<int> getNthPrimes(int start, int end) {
 
     while (count <= end) {
         if (isPrime(num)) {
-          ROS_INFO("NEW PRIME: %i", num);
+          // ROS_INFO("NEW PRIME: %i", num);
           if (count >= start) {
             primes.push_back(num);
           } 

@@ -54,7 +54,7 @@ CMAKE_BINARY_DIR = /home/marat/catkin_ws/src/simple_counter/build
 include CMakeFiles/_simple_counter_generate_messages_check_deps_CounterActionGoal.dir/progress.make
 
 CMakeFiles/_simple_counter_generate_messages_check_deps_CounterActionGoal:
-	catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py simple_counter /home/marat/catkin_ws/src/simple_counter/build/devel/share/simple_counter/msg/CounterActionGoal.msg simple_counter/CounterGoal:actionlib_msgs/GoalID:std_msgs/Header
+	catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py simple_counter /home/marat/catkin_ws/src/simple_counter/build/devel/share/simple_counter/msg/CounterActionGoal.msg std_msgs/Header:simple_counter/CounterGoal:actionlib_msgs/GoalID
 
 _simple_counter_generate_messages_check_deps_CounterActionGoal: CMakeFiles/_simple_counter_generate_messages_check_deps_CounterActionGoal
 _simple_counter_generate_messages_check_deps_CounterActionGoal: CMakeFiles/_simple_counter_generate_messages_check_deps_CounterActionGoal.dir/build.make
