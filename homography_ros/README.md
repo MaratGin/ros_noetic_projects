@@ -3,7 +3,7 @@
 ## Структура пакета
 
 ### fake_publisher.py 
-Публикует фотографию под углом в топик /image_send.
+Публикует фотографию под углом в топик /image_send. (Нужно указать путь до изображения)
 ```bash
 rosrun homography_ros fake_publisher.py
 ```

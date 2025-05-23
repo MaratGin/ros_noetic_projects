@@ -9,12 +9,9 @@ import numpy as np
 
 class FakePublisher(object):
     def __init__(self):
-        # Params
-        self.image = cv2.imread("/home/marat/catkin_ws/src/homography_ros/nodes/chess.png")
-        # Node cycle rate (in Hz).
+        self.image = cv2.imread("path/to/image")
         self.bridge = CvBridge()
         self.loop_rate = rospy.Rate(5)
-        # Publishers
         self.pub = rospy.Publisher('/image_send', Image,queue_size=10)
 
     def start(self):

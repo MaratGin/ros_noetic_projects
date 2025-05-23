@@ -62,8 +62,7 @@ class CornerSelector:
             self.corners.append((x, y))
             print(f"Выбрана точка {len(self.corners)}: ({x}, {y})")
             
-            # Обновляем изображение с отметками
-            # self.display_image = self.image.copy()
+
             for i, (cx, cy) in enumerate(self.corners, 1):
                 cv2.circle(self.display_image, (cx, cy), 10, (0, 0, 255), -1)
                 cv2.putText(self.display_image, str(i), (cx + 15, cy - 15),
@@ -104,7 +103,7 @@ class CornerSelector:
         if selected_corners is not None:
             print("\nВыбранные точки:")
             print(selected_corners)
-            src_corner_points = selected_corners  # 4 точки, введенные пользователем
+            src_corner_points = selected_corners 
             width, height = 210, 297
             dst_corner_points = np.array([[0,0],[width,0],[width,height],[0,height]], dtype=np.float32)
             H = cv2.getPerspectiveTransform(src_corner_points, dst_corner_points)
@@ -117,48 +116,13 @@ class CornerSelector:
             else:
                 img2_resized = corrected_img
 
-# Concatenate horizontally
             image = cv2.hconcat([opcv_image, img2_resized])
             final_image = self.cv_bridge.cv2_to_imgmsg(image)
             flag = True
-            # cv2.imwrite('final-combined.png', concat_img)
-        # concatinated = np.concatenate((image, corrected_img), axis=0)
-            # cv2.imshow("Final", concat_img)
-        # cv2.imshow("Исправленное", corrected_img)
-            # cv2.waitKey(0)
-        
-        # Здесь можно продолжить с вычислением гомографии...
         else:
             print("Не удалось выбрать 4 точки!")
         print("Finish")
         return ImageDataResponse(final_image)
-
-
-
-
-
-
-# Загрузка изображения
-# image = cv2.imread("chess.png") # или получение кадра из ROS-топика
-
-# # Этап 1: Ручной выбор углов (можно через cv2.setMouseCallback())
-# src_corner_points = [...]  # 4 точки, введенные пользователем
-
-# # Этап 2: Целевые координаты (например, в соотношении сторон формата A4)
-# width, height = 210, 297
-# dst_corner_points = np.array([...], dtype=np.float32)
-
-# # Этап 3: Вычисление матрицы гомографии
-# H = cv2.getPerspectiveTransform(src_corner_points, dst_corner_points)
-
-# # Этап 4: Перспективное преобразование
-# corrected_img = cv2.warpPerspective(image, H, (width, height))
-
-# # Этап 5: Визуализация
-# cv2.imshow("Исходное", image)
-# cv2.imshow("Исправленное", corrected_img)
-# cv2.waitKey(0)
-
 
 
 

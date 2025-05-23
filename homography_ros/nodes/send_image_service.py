@@ -32,26 +32,6 @@ def send_request(image):
         rospy.logerr(f"Service call failed: {e}")
         return None
     
-    cap = cv2.VideoCapture(0)
-    if not cap.isOpened():
-        return CaptureTransformResponse(False, Image())
-    
-    ret, frame = cap.read()
-    cap.release()
-    
-    if not ret:
-        return CaptureTransformResponse(False, Image())
-    
-    transformed = cv2.warpPerspective(frame, H, (width_px, height_px))
-    
-    try:
-        ros_image = bridge.cv2_to_imgmsg(transformed, "bgr8")
-    except Exception as e:
-        rospy.logerr(e)
-        return CaptureTransformResponse(False, Image())
-    
-    return CaptureTransformResponse(True, ros_image)
-
 def main():
     try:
         rospy.init_node('send_image_client')
@@ -62,7 +42,6 @@ def main():
             rospy.loginfo(f"Received") 
             test = received_image
             print(type(test.data)) 
-            # frame = np.array(test, dtype=np.uint8)
             bridge = CvBridge()
             opcv_image = bridge.imgmsg_to_cv2(received_image)
             res = cv2.resize(opcv_image, dsize=(720, 360), interpolation=cv2.INTER_CUBIC)
