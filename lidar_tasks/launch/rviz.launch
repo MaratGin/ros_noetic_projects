@@ -1,0 +1,13 @@
+<launch>
+	<arg name="model" default="$(find turtlebot3_description)/urdf/turtlebot3_waffle.urdf.xacro"/>
+	<arg name="gui" default="True" />
+	<arg name="rvizconfig" default="$(find pioneer_robot)/rviz/urdf.rviz" />
+     <arg name="use_tf_static" default="false"/> 
+ <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" >
+          <param name="use_tf_static" value="$(arg use_tf_static)"/>
+ </node>
+
+	<param name="robot_description" command="$(find xacro)/xacro $(arg model)" />
+
+	<node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
+</launch>
