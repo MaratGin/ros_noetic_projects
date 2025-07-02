@@ -1,0 +1,25 @@
+<launch>
+
+  <!-- Запускаем joint_state_controller -->
+    <!-- Load controller config -->
+  <rosparam file="$(find pioneer_robot)/config/test_pioneer_control.yaml" command="load"/>
+
+  <!-- Controllers -->
+  <node name="controller_spawner" 
+        pkg="controller_manager" 
+        type="spawner" 
+        respawn="false"
+        output="screen"
+        ns="/pioneer_robot"
+        args="joint_state_controller diff_drive_controller"/>
+        
+
+  <!-- Robot State Publisher -->
+  <node name="robot_state_publisher" 
+        pkg="robot_state_publisher" 
+        type="robot_state_publisher" 
+        respawn="false" 
+        output="screen"/>
+
+  <!-- Параметры контроллера -->
+</launch>

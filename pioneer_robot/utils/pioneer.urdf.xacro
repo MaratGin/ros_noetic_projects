@@ -1,0 +1,172 @@
+<?xml version="1.0"?>
+
+<robot name="pioneer2dx" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:arg name="laser_visual" default="false"/>
+
+
+  <material name="blue">
+    <color rgba="0 0 0.8 1"/>
+  </material>
+
+  <material name="dark_gray">
+    <color rgba="0.66 0.66 0.66 1"/>
+  </material>
+
+
+  <xacro:macro name="inertial_macro" params="mass">
+	  <inertial>
+	    <mass value="${mass}" />
+      	  <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+      </inertial>
+  </xacro:macro>
+
+
+  <xacro:macro name="base_macro">
+			<origin xyz="-0.045 0 0.145" rpy="0 0 0" />
+			<geometry>
+				<mesh filename="package://pioneer_robot/meshes/chassis.dae"/>
+			</geometry>
+  </xacro:macro>
+
+
+	<link name="base_link">
+		<!-- <xacro:inertial_macro mass="1"/> -->
+		<visual>
+    	<xacro:base_macro/>
+		</visual>
+		<collision>
+    	<xacro:base_macro/>
+		</collision>
+	</link>
+
+
+    <link name="caster_horizontal_link">
+    <xacro:inertial_macro mass="1.0"/>
+    <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+        <cylinder radius="0.02" length="0.01"/>
+        </geometry>
+        <material name="dark_gray"/>
+    </visual>
+    <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+            <sphere radius="0.04"/>
+        </geometry>
+    </collision>
+    </link>
+
+    <joint name="caster_horizontal_joint" type="continuous">
+    <origin xyz="0.15 0 -0.03" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="caster_horizontal_link"/>
+    <axis xyz="0 0 1"/>
+    </joint>
+
+    <link name="caster_vertical_link">
+  <xacro:inertial_macro mass="0.3"/>
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <sphere radius="0.06"/>
+    </geometry>
+    <material name="dark_gray"/>
+  </visual>
+  <collision>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <sphere radius="0.04"/>
+    </geometry>
+  </collision>
+    </link>
+
+    <joint name="caster_vertical_joint" type="continuous">
+    <origin xyz="0 0 0" rpy="0 ${-3.1415/2} 0"/>
+    <parent link="caster_horizontal_link"/>
+    <child link="caster_vertical_link"/>
+    <axis xyz="0 1 0"/>
+    </joint>
+
+
+    	<xacro:macro name="wheel" params="suffix flag">
+	
+		<link name="${suffix}_wheel">
+			<xacro:inertial_macro mass="1"/>
+			<visual>
+				<origin xyz="0 0 0" rpy="${-3.1415/2} 0 0" />
+				<geometry>
+					<cylinder radius="0.13" length="0.05" />
+				</geometry>
+				<material name="dark_gray"/>
+			</visual>
+
+			<collision>
+				<origin xyz="0 0 0" rpy="${-3.1415/2} 0 0" />
+				<geometry>
+					<cylinder radius="0.12" length="0.1" />
+				</geometry>
+			</collision>
+		</link>
+
+		<joint name="${suffix}_wheel_joint" type="continuous">
+			<axis xyz="0 1 0" />
+			<origin xyz="-0.12 ${flag*0.20} 0.091" rpy="0 0 0" />
+			<parent link="base_link" />
+			<child link="${suffix}_wheel" />
+		</joint>
+
+	</xacro:macro>
+
+
+  <link name="base_scan">
+    <xacro:inertial_macro mass="0.1"/>
+
+    <visual>
+      <origin xyz="0 0 0.0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://turtlebot3_description/meshes/sensors/lds.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </visual>
+
+    <collision>
+      <origin xyz="0.015 0 -0.0080" rpy="0 0 0"/>
+      <geometry>
+        <cylinder length="0.0315" radius="0.055"/>
+      </geometry>
+    </collision>
+  </link>
+
+    <joint name="scan_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="base_scan"/>
+    <origin xyz="0.125 0 0.225" rpy="0 0 0"/>
+  </joint>
+
+<link name="bumper_link">
+  <xacro:inertial_macro mass="0.2"/>
+  <visual>
+    <origin xyz="0.21 0 0.05" rpy="0 0 0"/>
+    <geometry>
+      <box size="0.03 0.3 0.05"/>
+    </geometry>
+    <material name="green"><color rgba="0.4 0.4 0.4 1"/></material>
+  </visual>
+  <collision name="bumper_link_collision_collision">
+    <!-- <origin xyz="0.19 0 0.05" rpy="0 0 0"/> -->
+    <geometry>
+      <box size="0.06 0.6 0.1"/>
+    </geometry>
+  </collision>
+</link>
+
+<joint name="bumper_joint" type="fixed">
+  <parent link="base_link"/>
+  <child link="bumper_link"/>
+  <origin xyz="-0.52 0 0.15" rpy="0 0 0"/>
+</joint>
+
+<xacro:wheel suffix="left" flag="1"/>
+<xacro:wheel suffix="right" flag="-1"/>
+
+</robot>

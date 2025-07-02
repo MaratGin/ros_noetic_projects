@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+
+<robot name="pioneer2dx_final" xmlns:xacro="http://www.ros.org/wiki/xacro">
+<xacro:include filename="$(find pioneer_robot)/urdf/pioneer.gazebo.xacro"/>
+<xacro:include filename="$(find pioneer_robot)/urdf/my_pioneer.xacro"/>
+<xacro:include filename="$(find pioneer_robot)/urdf/transmission.xacro"/>
+</robot>

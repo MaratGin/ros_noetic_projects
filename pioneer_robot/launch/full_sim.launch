@@ -1,0 +1,26 @@
+<launch>
+  <!-- Загрузка параметров модели -->
+  <param name="robot_description" command="$(find xacro)/xacro '$(find your_package)/urdf/pioneer.xacro'" />
+
+  <!-- Публикация трансформаций -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen"/>
+
+  <!-- Публикация суставов (можно убрать если gazebo сам публикует joint_states) -->
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" output="screen" />
+
+  <!-- Запуск Gazebo с моделью -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+  </include>
+
+  <!-- Спавн робота -->
+  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"
+        args="-param robot_description -urdf -model pioneer"
+        output="screen" />
+
+  <!-- RViz -->
+  <node name="rviz" pkg="rviz" type="rviz" required="true"
+        args="-d $(find your_package)/rviz/pioneer.rviz"
+        output="screen" />
+</launch>

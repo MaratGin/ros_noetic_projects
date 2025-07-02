@@ -1,0 +1,57 @@
+<transmission name="caster_swivel_trans">
+  <type>transmission_interface/SimpleTransmission</type>
+  <actuator name="caster_motor">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+  <joint name="caster_vertical_joint">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+  </joint>
+</transmission>
+
+<transmission name="caster_horiz_trans">
+  <type>transmission_interface/SimpleTransmission</type>
+  <actuator name="caster_motor">
+    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+  <joint name="caster_horizontal_joint">
+    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+  </joint>
+</transmission>
+
+<!-- Плагин ros_control -->
+
+<gazebo reference="caster_horizontal_link">
+  <material>Gazebo/Green</material>
+  <mu1>0.1</mu1>
+  <mu2>0.1</mu2>
+  <kp>1000000.0</kp>
+  <kd>1.0</kd>
+  <minDepth>0.001</minDepth>
+</gazebo>
+
+<!-- Add inside <gazebo reference="caster_vertical_link"> -->
+<gazebo reference="caster_vertical_link">
+  <material>Gazebo/Green</material>
+  <mu1>0.1</mu1>
+  <mu2>0.1</mu2>
+  <kp>1000000.0</kp>
+  <kd>1.0</kd>
+  <minDepth>0.001</minDepth>
+</gazebo>
+
+
+
+
+
+------- pioneer.xacro ---------
+
+<material name="blue">
+    <color rgba="0 0 0.8 1"/>
+  </material>
+
+
+  27 ---- 
+  		<!-- <xacro:inertial_macro mass="1"/> -->
+ ---------
